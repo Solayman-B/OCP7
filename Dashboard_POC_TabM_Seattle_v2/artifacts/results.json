@@ -1,0 +1,127 @@
+{
+  "filter_log": [
+    [
+      "Relev\u00e9s 2016 bruts",
+      3376
+    ],
+    [
+      "Hors habitation",
+      1665
+    ],
+    [
+      "Conformes, non outliers",
+      1546
+    ],
+    [
+      "Cibles > 0",
+      1544
+    ]
+  ],
+  "n_train": 1235,
+  "n_test": 309,
+  "n_trials": {
+    "Random Forest": 60,
+    "TabM": 15
+  },
+  "cv": [
+    {
+      "mod\u00e8le": "Random Forest",
+      "CV_RMSE_log": 0.7134353026660937,
+      "CV_std": 0.025095773328939485,
+      "CV_R2_log": 0.782788942543087
+    },
+    {
+      "mod\u00e8le": "TabM",
+      "CV_RMSE_log": 0.6395415106596296,
+      "CV_std": 0.020412940715495275,
+      "CV_R2_log": 0.8254919792972315
+    }
+  ],
+  "test": [
+    {
+      "mod\u00e8le": "Random Forest",
+      "fit_s": 1.381139087677002,
+      "RMSE_log": 0.5991171056662365,
+      "R2_log": 0.8297154760573969,
+      "R2_brut": 0.7022468484188934,
+      "MAE_brut": 54.563600941662784,
+      "MedAPE_%": 34.04964954520229
+    },
+    {
+      "mod\u00e8le": "TabM",
+      "fit_s": 22.203986263275148,
+      "RMSE_log": 0.5821719887143418,
+      "R2_log": 0.8391429390900601,
+      "R2_brut": 0.7439580828784613,
+      "MAE_brut": 50.48948780314862,
+      "MedAPE_%": 33.04461729671139
+    }
+  ],
+  "test_std": [
+    {
+      "mod\u00e8le": "Random Forest",
+      "fit_s": 0.11585488875880631,
+      "RMSE_log": 0.002159606090951534,
+      "R2_log": 0.0012256034114384408,
+      "R2_brut": 0.00567990119233451,
+      "MAE_brut": 0.754614539718557,
+      "MedAPE_%": 0.9329978127461759
+    },
+    {
+      "mod\u00e8le": "TabM",
+      "fit_s": 5.523535815960239,
+      "RMSE_log": 0.01362611932659873,
+      "R2_log": 0.007627176462942855,
+      "R2_brut": 0.03686471777692059,
+      "MAE_brut": 2.213118665294066,
+      "MedAPE_%": 1.2386635707956246
+    }
+  ],
+  "gain_cv_pct": 10.357462229626769,
+  "gain_test_pct": 2.828348046088791,
+  "best_params": {
+    "Random Forest": {
+      "max_depth": 16,
+      "max_features": 0.43685669253086234,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "bootstrap": true
+    },
+    "TabM": {
+      "n_blocks": 1,
+      "d_block": 448,
+      "dropout": 0.03400675355796673,
+      "lr": 0.0024593730835714583,
+      "weight_decay": 2.717832030750523e-05,
+      "n_bins": 16,
+      "d_embedding": 16
+    }
+  },
+  "importance": {
+    "elec_share": 0.5408986205596199,
+    "log_GFABuilding": 0.36965909267590263,
+    "log_GFATotal": 0.3015019026750558,
+    "gas_share": 0.20205650667635017,
+    "PrimaryPropertyType": 0.19464548928575948,
+    "LargestPropertyUseType": 0.14932147025155115,
+    "BuildingAge": 0.12480528728477315,
+    "largest_use_share": 0.0801181736862837,
+    "NumberofFloors": 0.06806342914469356,
+    "Neighborhood": 0.0563895590450117,
+    "steam_share": 0.053894056429878184,
+    "third_use_share": 0.04950685654188508,
+    "parking_share": 0.04506593778396602,
+    "n_use_types": 0.041037220113812216,
+    "second_use_share": 0.031293683523368476,
+    "Latitude": 0.02943689132837614,
+    "BuildingType": 0.022577620808796214,
+    "dist_downtown_km": 0.021944174050342068,
+    "Longitude": 0.015122172188336518,
+    "NumberofBuildings": 0.004583086384843195
+  },
+  "local_ids": {
+    "high": 63,
+    "low": 21913
+  },
+  "n_params_tabm": 196928
+}
