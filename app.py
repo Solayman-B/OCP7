@@ -12,6 +12,9 @@ Accessibilité (WCAG 2.1) prise en compte :
   avec Espace / Page suivante / flèches ;
 - 2.4.6 En-têtes et étiquettes : un titre par écran, sous-titres explicites ;
 - 3.3.2 Étiquettes : chaque champ de saisie a un libellé explicite et une aide.
+- 1.4.4 Redimensionnement du texte : vérifié à 200 % de zoom, sans perte de contenu ni défilement horizontal ;
+- 2.4.2 Titre de page : un titre d'onglet propre à chaque écran ; 3.1.1 Langue de la page : déclarée en français ;
+- Parcours utilisateur : chaque écran affiche la question à laquelle il répond et les étapes à suivre.
 
 Version 3 : carte interactive remplacée par un graphique en barres des émissions médianes par quartier (même information,
 lisible sans zoom ni souris), navigation par pages, curseurs remplacés par des champs numériques en %.
@@ -49,7 +52,7 @@ LABELS = {
 PLOT_CONFIG = {'displayModeBar': False, 'scrollZoom': False, 'doubleClick': False}   # aucun bouton à tabuler
 PLOT_LAYOUT = dict(template='simple_white', font=dict(size=14, color='#1F232B'), margin=dict(l=10, r=10, t=60, b=10), title_font=dict(size=17))
 
-st.set_page_config(page_title='Seattle, PoC TabM', page_icon='🏢', layout='wide')
+st.set_page_config(page_title='PoC TabM, émissions des bâtiments de Seattle', page_icon='🏢', layout='wide')
 st.markdown("""<style>
 html, body, [class*="css"] { font-size: 16px; }
 :focus-visible { outline: 3px solid #0072B2 !important; outline-offset: 2px; }
@@ -62,6 +65,7 @@ header a, header a p, header a span { font-size: 1.05rem !important; }
 # (Tab mène toujours d'abord au lien d'évitement puis aux liens des trois écrans).
 st.html("""<script>
 (function () {
+  document.documentElement.lang = 'fr';   // WCAG 3.1.1 : langue de la page (lecteurs d'écran)
   if (window.__a11yScroll) return; window.__a11yScroll = true;
   document.addEventListener('keydown', function (e) {
     const t = e.target;
@@ -156,10 +160,20 @@ st.sidebar.markdown("""**Utiliser le clavier**
 - **Entrée** : ouvrir un écran (liens en haut), valider ;
 - listes déroulantes : **Entrée** pour ouvrir, taper pour filtrer, **flèches** puis **Entrée** ;
 - **Espace**, **Page suivante**, **flèches** : faire défiler la page.""")
+with st.sidebar.expander('Abréviations utilisées'):
+    st.markdown("""- **GES** : gaz à effet de serre (t CO2e/an : tonnes d'équivalent CO2 par an) ;
+- **TabM** : « Tabular DL model that makes Multiple predictions », un réseau de neurones (DL : deep learning) qui imite un ensemble de 32 réseaux ;
+- **SHAP** : SHapley Additive exPlanations, contribution de chaque variable à une prédiction ;
+- **RMSE** : racine de l'erreur quadratique moyenne ; **R²** : part de la variance expliquée ;
+- **CV** : validation croisée ; **log** : logarithme ;
+- **P3** : 3e projet de ma formation, dont le Random Forest sert de référence (baseline).""")
 
 # ================================================================== 1. EDA
 def page_eda():
+    st.set_page_config(page_title='Exploration des données · PoC TabM Seattle')   # WCAG 2.4.2 : un titre d'onglet propre à chaque écran
     st.title('Exploration des données : bâtiments non résidentiels de Seattle (2016)', anchor=False)
+    with st.container(border=True):
+        st.markdown("**Question à laquelle répond cet écran** : quels bâtiments émettent le plus de gaz à effet de serre, et pourquoi ?\n\n**Parcours utilisateur**\n1. filtrer un ou plusieurs types de bâtiment (liste « Filtrer par type ») ;\n2. lire les statistiques, puis choisir une variable à compter ;\n3. observer la distribution des émissions (échelle log conseillée), le lien surface / émissions, les quartiers et les corrélations ;\n4. sous chaque graphique, ouvrir « Voir les données » pour lire les valeurs exactes.")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric('Bâtiments', f'{len(B):,}'.replace(',', ' '))
     c2.metric('Variables explicatives', len(FEATS))
@@ -230,7 +244,10 @@ def page_eda():
 
 # ================================================================== 2. Prédiction
 def page_prediction():
+    st.set_page_config(page_title="Prédiction d'un bâtiment · PoC TabM Seattle")   # WCAG 2.4.2 : un titre d'onglet propre à chaque écran
     st.title('Prédiction des émissions de GES avec TabM', anchor=False)
+    with st.container(border=True):
+        st.markdown("**Question à laquelle répond cet écran** : combien émet ce bâtiment, et qu'est-ce qui explique ce chiffre ?\n\n**Parcours utilisateur**\n1. choisir un bâtiment du jeu de test (taper son nom pour filtrer) ou saisir ses caractéristiques ;\n2. lire les émissions prédites par TabM, comparées à la valeur réelle et au Random Forest ;\n3. lire l'explication SHAP : les barres à droite augmentent les émissions, celles à gauche les diminuent ;\n4. en saisie libre, modifier une variable (part d'électricité par exemple) puis cliquer sur « Prédire » pour voir son effet.")
     mode = st.radio("Données d'entrée", ['Choisir un bâtiment du jeu de test', 'Saisir les caractéristiques d’un bâtiment'], horizontal=True)
     test = B[B.split == 'test']
     if mode.startswith('Choisir'):
@@ -321,7 +338,10 @@ def page_prediction():
 
 # ================================================================== 3. Comparaison
 def page_comparaison():
+    st.set_page_config(page_title='Comparaison des modèles · PoC TabM Seattle')   # WCAG 2.4.2 : un titre d'onglet propre à chaque écran
     st.title('Comparaison : TabM vs Random Forest (baseline du P3)', anchor=False)
+    with st.container(border=True):
+        st.markdown("**Question à laquelle répond cet écran** : TabM est-il plus fiable que le Random Forest de mon P3 ?\n\n**Parcours utilisateur**\n1. choisir une métrique dans la liste (chacune indique si plus bas ou plus haut est mieux) ;\n2. comparer les deux barres et leur écart-type sur 5 entraînements ;\n3. lire le tableau de synthèse : validation croisée et jeu de test.")
     T = pd.DataFrame(RES['test']).set_index('modèle').loc[MODELS]; S = pd.DataFrame(RES['test_std']).set_index('modèle').loc[MODELS]
     CV = pd.DataFrame(RES['cv']).set_index('modèle').loc[MODELS]
     metric = st.selectbox('Métrique (jeu de test, 5 graines)', ['RMSE_log', 'R2_log', 'MedAPE_%', 'R2_brut'],
