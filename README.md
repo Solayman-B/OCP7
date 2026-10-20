@@ -9,7 +9,13 @@ comparé au Random Forest de mon projet P3 (baseline).
 2. **Prédiction** : choix d'un bâtiment du jeu de test ou saisie de ses caractéristiques → émissions prédites par TabM, comparaison avec la baseline, explication SHAP locale.
 3. **Comparaison des modèles** : métriques sur le jeu de test (5 graines) et en validation croisée.
 
-## Accessibilité (WCAG 2.1)
+## Parcours utilisateur
+Chaque écran répond à une question et l'affiche en haut de page, avec les étapes à suivre :
+1. **Exploration** : « Quels bâtiments émettent le plus, et pourquoi ? » → filtrer par type, choisir une variable à compter, lire la distribution (log), le nuage surface / émissions, les quartiers et les corrélations.
+2. **Prédiction** : « Combien émet ce bâtiment, et qu'est-ce qui l'explique ? » → choisir un bâtiment du test (ou le saisir), lire la prédiction de TabM face à la valeur réelle et au Random Forest, puis l'explication SHAP ; en saisie libre, modifier une variable et cliquer sur « Prédire ».
+3. **Comparaison** : « TabM est-il plus fiable que le Random Forest ? » → choisir une métrique, comparer les barres et leur écart-type, lire le tableau de synthèse.
+
+## Accessibilité (WCAG 2.1, règles internationales d'accessibilité du web)
 - Palette Okabe-Ito / cividis (daltonisme) ; la couleur n'est jamais seule : formes de marqueurs, motifs de barres, valeurs écrites (1.4.1).
 - Chaque graphique a un titre, une description textuelle et ses données en tableau (1.1.1).
 - Texte et graduations foncés sur fond clair, contraste > 4,5:1 (1.4.3, 1.4.11) ; thème clair imposé par `.streamlit/config.toml`.
@@ -20,6 +26,8 @@ comparé au Random Forest de mon projet P3 (baseline).
   lien « Aller au contenu principal » (2.4.1) ; focus visible (2.4.7) ; mode d'emploi clavier dans la barre latérale.
 - Pas de carte interactive (zoom et survol à la souris, illisible au clavier) : remplacée par les émissions médianes par
   quartier en barres triées, avec valeurs écrites.
+- Redimensionnement du texte (1.4.4) : vérifié à 200 % de zoom, sans perte de contenu ni défilement horizontal.
+- Titre de page (2.4.2) : chaque écran a son propre titre d'onglet (« Exploration des données · PoC TabM Seattle », etc.) ; langue déclarée en français (3.1.1).
 - Champs avec libellés et aides (3.3.2) ; parts d'énergie saisies en % dans des champs numériques plutôt qu'avec des curseurs.
 
 ## Lancer en local
